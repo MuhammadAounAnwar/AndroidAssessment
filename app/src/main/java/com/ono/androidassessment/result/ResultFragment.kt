@@ -13,11 +13,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.ono.androidassessment.MainActivityViewModel
 import com.ono.androidassessment.UserAgeModel
-import com.ono.androidassessment.database.DatabaseEngine
 import com.ono.androidassessment.databinding.FragmentResultBinding
-import kotlinx.coroutines.CoroutineScope
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val TAG = "ResultFragment"
@@ -27,7 +25,7 @@ fun FragmentResultBinding.displayResult(userAgeModel: UserAgeModel) {
     tvResult.text = value
 }
 
-
+@AndroidEntryPoint
 class ResultFragment : Fragment() {
 
     companion object {
@@ -71,9 +69,9 @@ class ResultFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.userDetail.collect {
-                    CoroutineScope(Dispatchers.Default).launch {
-                        DatabaseEngine.getInstance(requireActivity()).userDao().insertNewDetail(it as UserAgeModel)
-                    }
+//                    CoroutineScope(Dispatchers.Default).launch {
+//                        DatabaseEngine.getInstance(requireActivity()).userDao().insertNewDetail(it)
+//                    }
 
                     withContext(Dispatchers.Main) {
                         binding.displayResult(it as UserAgeModel)

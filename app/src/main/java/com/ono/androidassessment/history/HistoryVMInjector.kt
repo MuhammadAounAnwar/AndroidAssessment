@@ -1,9 +1,12 @@
 package com.ono.androidassessment.history
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import com.ono.androidassessment.ViewModelInjector
+import dagger.hilt.android.scopes.FragmentScoped
+import javax.inject.Inject
 
-class HistoryVMInjector(private val context: Context) : ViewModelInjector<HistoryViewModel> {
-    override fun create(savedStateHandle: SavedStateHandle): HistoryViewModel = HistoryViewModel(savedStateHandle, context)
+@FragmentScoped
+class HistoryVMInjector @Inject constructor(private val context: Application, private val iHistoryRepo: IHistoryRepo) : ViewModelInjector<HistoryViewModel> {
+    override fun create(savedStateHandle: SavedStateHandle): HistoryViewModel = HistoryViewModel(iHistoryRepo)
 }

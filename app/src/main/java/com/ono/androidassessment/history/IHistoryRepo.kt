@@ -1,28 +1,28 @@
 package com.ono.androidassessment.history
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import com.ono.androidassessment.UserAgeModel
-import com.ono.androidassessment.database.DatabaseEngine
+import com.ono.androidassessment.database.UserDao
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import javax.inject.Inject
 
 interface IHistoryRepo {
     suspend fun getAllUserDetails(): LiveData<List<UserAgeModel>>
 }
 
-class HistoryRepoImpl(val context: Context) : IHistoryRepo {
-
+class HistoryRepoImpl @Inject constructor(private val userDao: UserDao) : IHistoryRepo {
     var result: List<UserAgeModel> = arrayListOf()
     override suspend fun getAllUserDetails(): LiveData<List<UserAgeModel>> {
-        return DatabaseEngine.getInstance(context).userDao().getAllUsersDetails()
-
+        return userDao.getAllUsersDetails()
     }
+}
 
-//    override suspend fun getAllUserDetails(): List<UserAgeModel> {
-//        val res = CoroutineScope(Dispatchers.Default).async {
-//            result = DatabaseEngine.getInstance(context).userDao().getAllUsersDetails()
-//        }
-//        res.await()
-//        return result
-//    }
-
+@Module
+@InstallIn(ViewModelComponent::class)
+abstract class RepoModule {
+    @Binds
+    abstract fun provideRepo(historyRepoImpl: HistoryRepoImpl): IHistoryRepo
 }

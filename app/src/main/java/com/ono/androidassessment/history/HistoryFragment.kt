@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.ono.androidassessment.ViewModelFactory
+import androidx.fragment.app.viewModels
 import com.ono.androidassessment.databinding.FragmentHistoryBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class HistoryFragment : Fragment() {
 
     companion object {
@@ -17,14 +19,23 @@ class HistoryFragment : Fragment() {
 
     private lateinit var binding: FragmentHistoryBinding
 
-    private val injector by lazy {
-        HistoryVMInjector(requireContext())
-    }
+//    private val injector by lazy {
+//        HistoryVMInjector(requireContext())
+//    }
 
-    private val viewModel by lazy {
-        val factory = ViewModelFactory(injector, this, null)
-        ViewModelProvider(this, factory)[HistoryViewModel::class.java]
-    }
+//    @Inject
+//    lateinit var injector: HistoryVMInjector
+
+    //    private val iHistoryRepo by lazy {
+//        HistoryRepoImpl(context)
+//    }
+
+//    private val viewModel by lazy {
+//        val factory = ViewModelFactory(injector, this, null)
+//        ViewModelProvider(this, factory)[HistoryViewModel::class.java]
+//    }
+
+    private val viewModel: HistoryViewModel by viewModels()
 
     private val adapter by lazy {
         HistoryRVAdapter()
